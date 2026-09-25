@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>H&M Mecânica - Gestão Inteligente</title>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #f0f3f9;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .app-card {
+            background: #151c2c;
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            width: 100%;
+            max-width: 380px;
+            border: 1px solid #222d44;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: #438eff;
+            font-size: 24px;
+            margin: 0 0 4px 0;
+            font-weight: 700;
+        }
+
+        .sub-titulo {
+            font-size: 13px;
+            color: #7081a2;
+            margin-bottom: 24px;
+        }
+
+        .passo-caixa {
+            background: #0b0f19;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #1c263b;
+            text-align: left;
+        }
+
+        .passo-titulo {
+            font-size: 14px;
+            font-weight: 600;
+            color: #438eff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #94a7c6;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #151c2c;
+            border: 1px solid #222d44;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        /* 🚀 TOQUE DE MESTRE: FORÇA A PLACA A FICAR EM MAIÚSCULO NA TELA */
+        #os_carro {
+            text-transform: uppercase;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .btn-calcular {
+            background: linear-gradient(135deg, #1c263b 0%, #111827 100%);
+            color: #94a7c6;
+            border: 2px solid #222d44;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 8px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-calcular:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-color: #60a5fa;
+            box-shadow: 0 0 25px rgba(59, 130, 246, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .visor-resultado {
+            margin-top: 24px;
+            padding: 20px;
+            border-radius: 16px;
+            background: #0b0f19;
+            border: 2px solid #222d44;
+            display: none;
+            text-align: left;
+        }
+
+        .status-badge {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .linha-dados {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #94a7c6;
+        }
+
+        .linha-destaque {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px dashed #222d44;
+        }
+
+        .secao-historico {
+            margin-top: 24px;
+            border-top: 1px solid #222d44;
+            padding-top: 16px;
+            text-align: left;
+        }
+
+        .btn-banco {
+            background: #111827;
+            color: #10b981;
+            border: 1px solid #10b981;
+            padding: 10px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-card">
+        <h2>H&M Mecânica</h2>
+        <div class="sub-titulo">Controle de Ordens de Serviço sem ilusão</div>
+        
+        <!-- CÔMODO 1 -->
+        <div class="passo-caixa">
+            <div class="passo-titulo">🚗 Identificação e Sintomas</div>
+            <label>Data do Serviço:</label>
+            <input type="date" id="os_data">
+            <label>Modelo do Carro / Placa:</label>
+            <input type="text" id="os_carro" placeholder="EX: CORSA - ABC1234">
+            <label style="margin-top: 12px;">Sintomas relatados e Diagnóstico:</label>
+            <textarea id="os_sintomas" placeholder="Ex: Barulho na suspensão dianteira..."></textarea>
+        </div>
+
+        <!-- CÔMODO 2 -->
+        <div class="passo-caixa">
+            <div class="passo-titulo">💰 Valores Cobrados do Cliente</div>
+            <label>Total em Mão de Obra (R$):</label>
+            <input type="number" id="val_mao_obra" placeholder="R$ 0,00">
+            <label>Total em Peças Cobrado (R$):</label>
+            <input type="number" id="val_pecas_cliente" placeholder="R$ 0,00" value="0">
+
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px; background: #0b0f19; padding: 10px; border-radius: 8px; border: 1px dashed #222d44;">
+                <input type="checkbox" id="os_pecas_cliente" style="width: auto; margin: 0; cursor: pointer;" onchange="alternarCamposPecas()">
+                <label for="os_pecas_cliente" style="margin: 0; cursor: pointer; color: #10b981; font-weight: 600;">⚠️ O cliente trouxe as próprias peças</label>
+            </div>
+        </div>
+
+        <!-- CÔMODO 3 -->
+        <div class="passo-caixa" id="painel_custo_oficina">
+            <div class="passo-titulo">📉 Custos Reais de Execução</div>
+            <label>Quanto a oficina pagou pelas peças (R$):</label>
+            <input type="number" id="custo_pecas_fabrica" placeholder="R$ 0,00" value="0">
+        </div>
+
+        <!-- 🍿 NOVO CÔMODO: RALOS HUMANOS DA OFICINA -->
+        <div class="passo-caixa">
+            <div class="passo-titulo">🥪 Gastos do Dia (Pão / Sangrias)</div>
+            <label>Pão com mortadela da hora extra, lanches ou sangria da esposa (R$):</label>
+            <input type="number" id="ralos_oficina" placeholder="R$ 0,00" value="0">
+        </div>
+
+        <button class="btn-calcular" onclick="fecharOrdemServico()">Fechar O.S. e Salvar</button>
+
+        <!-- VISOR INTERNO -->
+        <div id="visor-os" class="visor-resultado">
+            <div id="badge-lucro" class="status-badge"></div>
+            <div id="corpo-os"></div>
+        </div>
+
+        <div class="secao-historico">
+            <button class="btn-banco" onclick="alternarVisibilidadeFaturamento()">👁️ Ver Caixa Geral da Oficina</button>
+            <div id="visor-caixa-geral" class="visor-resultado" style="border-color: #10b981; display: none;"></div>
+        </div>
+
+        <div class="secao-historico">
+            <label>🔍 Buscar dados de um dia passado:</label>
+            <input type="date" id="data_pesquisa" onchange="puxarDoPassado()">
+            <div id="visor-pesquisa" class="visor-resultado" style="margin-top:12px;"></div>
+        </div>
+
+        <div style="margin-top: 30px; font-size: 11px; color: #7081a2; text-align: center; letter-spacing: 0.5px;">
+            Desenvolvido com Sabedoria por <strong style="color: #438eff; font-weight: 600;">Mauro Vieira de Resende</strong>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('os_data').valueAsDate = new Date();
+
+        function alternarCamposPecas() {
+            let marcouCliente = document.getElementById('os_pecas_cliente').checked;
+            let campoPecasCliente = document.getElementById('val_pecas_cliente');
+            let campoPecasFabrica = document.getElementById('custo_pecas_fabrica');
+
+            if (marcouCliente) {
+                campoPecasCliente.value = "0";
+                campoPecasFabrica.value = "0";
+                campoPecasCliente.disabled = true;
+                campoPecasFabrica.disabled = true;
+                campoPecasCliente.style.opacity = "0.5";
+                campoPecasFabrica.style.opacity = "0.5";
+            } else {
+                campoPecasCliente.disabled = false;
+                campoPecasFabrica.disabled = false;
+                campoPecasCliente.style.opacity = "1";
+                campoPecasFabrica.style.opacity = "1";
+            }
+        }
+
+        function fecharOrdemServico() {
+            let data = document.getElementById('os_data').value;
+            let carro = document.getElementById('os_carro').value.trim().toUpperCase();
+            let sintomas = document.getElementById('os_sintomas').value.trim();
+            let maoObra = parseFloat(document.getElementById('val_mao_obra').value);
+            let pecasDoCliente = document.getElementById('os_pecas_cliente').checked;
+            let ralos = parseFloat(document.getElementById('ralos_oficina').value) || 0;
+
+            let pecasCliente = pecasDoCliente ? 0 : parseFloat(document.getElementById('val_pecas_cliente').value);
+            let pecasFabrica = pecasDoCliente ? 0 : parseFloat(document.getElementById('custo_pecas_fabrica').value);
+
+            if (!data || !carro || !sintomas || isNaN(maoObra) || (!pecasDoCliente && (isNaN(pecasCliente) || isNaN(pecasFabrica)))) {
+                alert("Por favor, preencha todos os campos da Ordem de Serviço!");
+                return;
+            }
+
+            let lucro_nas_pecas = pecasDoCliente ? 0 : (pecasCliente - pecasFabrica);
+            let lucro_liquido_os = (maoObra + lucro_nas_pecas) - ralos;
+            let faturamento_bruto_os = maoObra + pecasCliente;
+            let nota_garantia = pecasDoCliente
+                ? "⚠️ PEÇAS TRAZIDAS PELO CLIENTE (Sem garantia da oficina)"
+                : "📦 Peças fornecidas pela oficina";
+
+            let registroOS = {
+                carro: carro,
+                sintomas: sintomas,
+                bruto: faturamento_bruto_os,
+                lucro: lucro_liquido_os,
+                pecas_lucro: lucro_nas_pecas,
+                obra: maoObra,
+                garantia: nota_garantia,
+                gastos_extras: ralos
+            };
+
+            localStorage.setItem("HM_OS_" + data + "_" + carro, JSON.stringify(registroOS));
+
+            let visor = document.getElementById('visor-os');
+            let badge = document.getElementById('badge-lucro');
+            let corpo = document.getElementById('corpo-os');
+            let destaque = document.getElementById('txt-lucro-destaque');
+
+            if (lucro_liquido_os > 0) {
+                visor.style.borderColor = "#10b981";
+                badge.style.color = "#10b981";
+                badge.innerText = "✅ SERVIÇO CONCLUÍDO COM LUCRO!";
+                if (destaque) destaque.style.color = "#10b981";
+            } else {
+                visor.style.borderColor = "#ef4444";
+                badge.style.color = "#ef4444";
+                badge.innerText = "🚨 ALERTA: SANGRIAS E CUSTOS DEIXARAM A OS NO VERMELHO!";
+                if (destaque) destaque.style.color = "#ef4444";
+            }
+
+            corpo.innerHTML = `
+                <div class="linha-dados"><span>🚗 Veículo atendido:</span> <strong>${carro}</strong></div>
+                <div class="linha-dados" style="flex-direction: column; align-items: flex-start; margin-bottom: 12px; padding: 10px; background: #0b0f19; border-radius: 8px; border-left: 3px solid #438eff;">
+                    <span style="font-size: 12px; color: #7081a2; margin-bottom: 4px;">📝 Respaldo técnico / Sintomas:</span>
+                    <strong style="color: #fff; font-weight: 500; font-size: 13px; text-align: left;">${sintomas}</strong>
+                </div>
+                <div class="linha-dados" style="color: #f59e0b; font-size: 12px; font-weight: 600; margin-bottom: 8px;">
+                    <span>${nota_garantia}</span>
+                </div>
+                <div class="linha-dados"><span>🛠️ Mão de Obra (Ganho):</span> <strong>R$ ${maoObra.toFixed(2)}</strong></div>
+                <div class="linha-dados"><span>📦 Sobra sobre Peças:</span> <strong>R$ ${lucro_nas_pecas.toFixed(2)}</strong></div>
+                <div class="linha-dados" style="color:#ef4444;"><span>🥪 Lanche da equipe / Sangrias:</span> <strong>R$ ${ralos.toFixed(2)}</strong></div>
+                <div class="linha-destaque" id="txt-lucro-destaque"><span>💰 LUCRO REAL RETIDO:</span> <strong>R$ ${lucro_liquido_os.toFixed(2)}</strong></div>
+            `;
+
+            visor.style.display = 'block';
+
+            if (document.getElementById('visor-caixa-geral').style.display === 'block') {
+                calcularCaixaGeralOficina();
+            }
+        }
+
+        function alternarVisibilidadeFaturamento() {
+            let v = document.getElementById('visor-caixa-geral');
+            if (v.style.display === 'block') {
+                v.style.display = 'none';
+            } else {
+                calcularCaixaGeralOficina();
+                v.style.display = 'block';
+            }
+        }
+
+        function calcularCaixaGeralOficina() {
+            let faturamentoTotal = 0;
+            let lucroTotal = 0;
+            let quantidade = 0;
+
+            for (let i = 0; i < localStorage.length; i++) {
+                let chave = localStorage.key(i);
+                if (chave && chave.startsWith("HM_OS_")) {
+                    let dadosOS = JSON.parse(localStorage.getItem(chave));
+                    faturamentoTotal += dadosOS.bruto;
+                    lucroTotal += dadosOS.lucro;
+                    quantidade++;
+                }
+            }
+
+            document.getElementById('visor-caixa-geral').innerHTML = `
+                <div style="font-weight:700; color:#10b981; margin-bottom:8px; text-align:center;">📊 Balanço Mensal Retido</div>
+                <div class="linha-dados"><span>🚗 Carros Atendidos:</span> <strong style="color:#fff">${quantidade} veículos</strong></div>
+                <div class="linha-dados"><span>📈 Faturamento Bruto:</span> <strong style="color:#fff">R$ ${faturamentoTotal.toFixed(2)}</strong></div>
+                <div class="linha-destaque" style="color: #10b981; border-top: 1px dashed #10b981;">
+                    <span>💰 LUCRO LIMPO OFICINA:</span> <strong>R$ ${lucroTotal.toFixed(2)}</strong>
+                </div>
+            `;
+        }
+
+        function puxarDoPassado() {
+            let dataAlvo = document.getElementById('data_pesquisa').value;
+            let visorP = document.getElementById('visor-pesquisa');
+            let chaveAlvo = "";
+
+            for (let i = 0; i < localStorage.length; i++) {
+                if (localStorage.key(i) && localStorage.key(i).startsWith("HM_OS_" + dataAlvo)) {
+                    chaveAlvo = localStorage.key(i);
+                    break;
+                }
+            }
+
+            let res = localStorage.getItem(chaveAlvo);
+
+            if (res) {
+                let d = JSON.parse(res);
+                visorP.style.display = 'block';
+                visorP.style.borderColor = "#438eff";
+                visorP.innerHTML = `
+                    <div class="linha-dados"><span>Carro Atendido:</span> <strong style="text-transform: uppercase;">${d.carro}</strong></div>
+                    <div class="linha-dados" style="flex-direction: column; align-items: flex-start; margin: 6px 0; padding: 8px; background: #151c2c; border-radius: 8px; border-left: 3px solid #438eff;">
+                        <span style="font-size: 11px; color: #7081a2;">Respaldo / Sintomas:</span>
+                        <span style="color:#fff; font-size:12px; text-align: left;">${d.sintomas}</span>
+                    </div>
+                    <div class="linha-dados" style="color:#ef4444;"><span>🥪 Sangrias na Data:</span> <strong>R$ ${(d.gastos_extras || 0).toFixed(2)}</strong></div>
+                    <div class="linha-destaque" style="color: ${d.lucro > 0 ? '#10b981' : '#ef4444'}"><span>💰 LUCRO REAL OS:</span> <strong>R$ ${d.lucro.toFixed(2)}</strong></div>
+                `;
+            } else {
+                visorP.style.display = 'block';
+                visorP.style.borderColor = "#ef4444";
+                visorP.innerHTML = "❌ Nenhuma OS nessa data.";
+            }
+        }
+
+</script>
+</body>
+</html>
